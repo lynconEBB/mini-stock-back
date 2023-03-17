@@ -1,0 +1,15 @@
+version: '3.1'
+services:
+  db:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mini-stock
+    ports:
+      - "3306:3306"
+    volumes:
+      - mini-stock-volume:/var/lib/mysql
+
+volumes:
+  mini-stock-volume:
