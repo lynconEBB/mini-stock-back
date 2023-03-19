@@ -16,18 +16,17 @@ public class Product {
 
     private String name;
 
-    @Enumerated(EnumType.STRING)
-    PaymentMethod paymentMethod;
+    private Long amount;
 
     private String imagePath;
 
-    private Double PurchasePrice;
+    private Double purchasePrice;
 
-    private Double SalePrice;
+    private Double salePrice;
 
     @ManyToOne
     Supplier supplier;
 
     @ManyToMany
-    Set<Type> type;
+    Set<Type> types;
 }

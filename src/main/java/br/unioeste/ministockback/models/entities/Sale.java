@@ -16,6 +16,9 @@ public class Sale {
 
     private LocalDate date;
 
+    @Enumerated(EnumType.STRING)
+    PaymentMethod paymentMethod;
+
     @ManyToOne
     private Customer customer;
 

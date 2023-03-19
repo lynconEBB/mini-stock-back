@@ -11,7 +11,7 @@ public class ItemPurchase {
     @EmbeddedId
     private ItemPurchaseId id;
 
-    private Long amount;
+    private Long amount = 0L;
 
     private Double price;
 
