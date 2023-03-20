@@ -24,6 +24,6 @@ public class Purchase {
 
     private Double discount;
 
-    @OneToMany(mappedBy = "id.purchase")
+    @OneToMany(mappedBy = "id.purchase", cascade = {CascadeType.PERSIST})
     private Set<ItemPurchase> items;
 }

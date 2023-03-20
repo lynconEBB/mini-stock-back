@@ -6,6 +6,7 @@ import br.unioeste.ministockback.models.entities.Supplier;
 import br.unioeste.ministockback.models.entities.Type;
 import br.unioeste.ministockback.repositories.ProductRepository;
 import br.unioeste.ministockback.repositories.TypeRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,7 @@ public class ProductController {
     private final TypeRepository typeRepository;
 
     @PostMapping
-    public ResponseEntity<Product> create(@RequestBody ProductFormDTO productForm) {
+    public ResponseEntity<Product> create(@RequestBody @Valid ProductFormDTO productForm) {
         Product productMap = modelMapper.map(productForm, Product.class);
         Set<Type> typesWithId = productForm.getTypesId()
                 .stream()
@@ -63,7 +64,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@RequestBody ProductFormDTO productForm, @PathVariable Long id) {
+    public ResponseEntity<Void> update(@RequestBody @Valid ProductFormDTO productForm, @PathVariable Long id) {
         Product product = productRepository.findById(id).orElseThrow();
 
         Set<Type> typesWithId = productForm.getTypesId()

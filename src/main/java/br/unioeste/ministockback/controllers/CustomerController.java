@@ -2,8 +2,9 @@ package br.unioeste.ministockback.controllers;
 
 import br.unioeste.ministockback.models.entities.Customer;
 import br.unioeste.ministockback.repositories.CustomerRepository;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,16 +12,13 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("customer")
+@RequiredArgsConstructor
 public class CustomerController {
 
     private final CustomerRepository customerRepository;
 
-    public CustomerController(CustomerRepository customerRepository) {
-        this.customerRepository = customerRepository;
-    }
-
     @PostMapping
-    public ResponseEntity<Customer> create(@RequestBody Customer customerForm) {
+    public ResponseEntity<Customer> create(@RequestBody @Valid Customer customerForm) {
         Customer customer = customerRepository.save(customerForm);
         return ResponseEntity.ok(customer);
     }
@@ -32,7 +30,7 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> get(@PathVariable  Long id) {
+    public ResponseEntity<?> get(@PathVariable Long id) {
         Optional<Customer> customerOpt = customerRepository.findById(id);
 
         if (customerOpt.isPresent()) {
@@ -43,7 +41,7 @@ public class CustomerController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@RequestBody Customer customer, @PathVariable Long id) {
+    public ResponseEntity<Void> update(@RequestBody @Valid Customer customer, @PathVariable Long id) {
         customer.setId(id);
         customerRepository.saveAndFlush(customer);
         return ResponseEntity.ok().build();
