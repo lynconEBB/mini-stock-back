@@ -1,7 +1,7 @@
 package br.unioeste.ministockback.models.dtos;
 
+import br.unioeste.ministockback.models.entities.PaymentMethod;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -14,15 +14,19 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PurchaseFormDTO {
+public class SaleFormDTO {
+
     private LocalDate date;
+
     @NotNull
-    private Long supplierId;
+    private Long customerId;
 
     @NotNull
     private Double discount;
 
+    private PaymentMethod paymentMethod;
     @Valid
     @NotEmpty
-    private Set<ItemPurchaseFormDTO> items;
+    private Set<ItemSaleFormDTO> items;
+
 }

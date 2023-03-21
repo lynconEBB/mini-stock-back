@@ -7,6 +7,7 @@ import br.unioeste.ministockback.models.entities.Product;
 import br.unioeste.ministockback.models.entities.Purchase;
 import br.unioeste.ministockback.repositories.ProductRepository;
 import br.unioeste.ministockback.repositories.PurchaseRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -14,9 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,18 +25,10 @@ public class PurchaseController {
 
     private final PurchaseRepository purchaseRepository;
     private final ProductRepository productRepository;
-
     private final ModelMapper modelMapper;
 
-    private boolean isPurchaseValid(PurchaseFormDTO purchase) {
-       if (purchase.getItems().size() == 0)
-           return false;
-
-       return true;
-    }
-
     @PostMapping
-    public ResponseEntity<PurchaseResponseDTO> create(@RequestBody PurchaseFormDTO purchaseForm) {
+    public ResponseEntity<PurchaseResponseDTO> create(@RequestBody @Valid PurchaseFormDTO purchaseForm) {
         Purchase map = modelMapper.map(purchaseForm, Purchase.class);
         map.setId(null);
 
@@ -62,8 +53,7 @@ public class PurchaseController {
         map.setLiquidPrice(total - (total * (map.getDiscount()/100)));
 
         map = purchaseRepository.save(map);
-        List<PurchaseResponseDTO> purchaseResponse = modelMapper.map(map, new TypeToken<List<PurchaseResponseDTO>>() {
-        }.getType());
+        PurchaseResponseDTO purchaseResponse = modelMapper.map(map, PurchaseResponseDTO.class);
         return ResponseEntity.ok(purchaseResponse);
     }
 

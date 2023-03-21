@@ -22,7 +22,7 @@ public class SecurityConfiguration {
         security
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/user/**")
+                .requestMatchers("/user/**","/swagger-ui/**","/v3/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

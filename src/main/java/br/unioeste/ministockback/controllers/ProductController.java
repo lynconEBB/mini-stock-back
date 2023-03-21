@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("product")
-@CrossOrigin
 @Transactional
 @RequiredArgsConstructor
 public class ProductController {
@@ -34,6 +33,7 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<Product> create(@RequestBody @Valid ProductFormDTO productForm) {
         Product productMap = modelMapper.map(productForm, Product.class);
+
         Set<Type> typesWithId = productForm.getTypesId()
                 .stream()
                 .map(id -> typeRepository.findById(id).orElse(null))
@@ -47,13 +47,19 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Product>> list() {
-        List<Product> products = productRepository.findAll();
+    public ResponseEntity<List<Product>> list(@RequestParam(required = false) Boolean withStock) {
+        List<Product> products;
+        if (withStock != null) {
+            products = productRepository.findByAmountGreaterThan(0L);
+        } else {
+            products = productRepository.findAll();
+        }
+
         return ResponseEntity.ok(products);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> get(@PathVariable  Long id) {
+    public ResponseEntity<?> get(@PathVariable Long id) {
         Optional<Product> productOpt = productRepository.findById(id);
 
         if (productOpt.isPresent()) {
