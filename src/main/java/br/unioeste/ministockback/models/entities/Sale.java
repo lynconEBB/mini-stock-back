@@ -28,7 +28,7 @@ public class Sale {
 
     private Double discount;
 
-    @OneToMany(mappedBy = "id.sale")
+    @OneToMany(mappedBy = "id.sale", cascade = {CascadeType.PERSIST})
     private Set<ItemSale> items;
 
 

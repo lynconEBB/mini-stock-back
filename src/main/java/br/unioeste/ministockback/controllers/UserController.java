@@ -28,7 +28,7 @@ public class UserController {
         User user = User.builder()
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.ADMIN)
+                .role(request.getRole())
                 .build();
 
         userRepository.save(user);

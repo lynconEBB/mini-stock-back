@@ -29,12 +29,12 @@ public class PurchaseController {
 
     @PostMapping
     public ResponseEntity<PurchaseResponseDTO> create(@RequestBody @Valid PurchaseFormDTO purchaseForm) {
-        Purchase map = modelMapper.map(purchaseForm, Purchase.class);
-        map.setId(null);
+        Purchase purchase = modelMapper.map(purchaseForm, Purchase.class);
+        purchase.setId(null);
 
         Double total = 0.0;
-        for (ItemPurchase item : map.getItems()) {
-            item.getId().setPurchase(map);
+        for (ItemPurchase item : purchase.getItems()) {
+            item.getId().setPurchase(purchase);
             item.setTotal(item.getPrice() * item.getAmount());
 
             total += item.getTotal();
@@ -49,11 +49,11 @@ public class PurchaseController {
 
             productRepository.save(product);
         }
-        map.setTotal(total);
-        map.setLiquidPrice(total - (total * (map.getDiscount()/100)));
+        purchase.setTotal(total);
+        purchase.setLiquidPrice(total - (total * (purchase.getDiscount()/100)));
 
-        map = purchaseRepository.save(map);
-        PurchaseResponseDTO purchaseResponse = modelMapper.map(map, PurchaseResponseDTO.class);
+        purchase = purchaseRepository.save(purchase);
+        PurchaseResponseDTO purchaseResponse = modelMapper.map(purchase, PurchaseResponseDTO.class);
         return ResponseEntity.ok(purchaseResponse);
     }
 
